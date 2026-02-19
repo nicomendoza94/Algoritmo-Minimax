@@ -22,3 +22,27 @@ class Jugadores:
 
     def posicion(self):   #para devolver la posicion actual
         return self.fila, self.columna
+    
+# Representa al jugador que intenta atrapar al ratón
+class Gato(Jugadores):
+    def movimientos_permitidos(self):
+        movimientos = []
+
+        for cambio_f, cambio_c in DIRECCIONES:
+            nueva_f, nueva_c = self.fila + cambio_f, self.columna + cambio_c
+
+            if 0 <= nueva_f < MATRIZ_TAMANO and 0 <= nueva_c < MATRIZ_TAMANO:
+                movimientos.append((nueva_f, nueva_c))
+        return movimientos
+
+# Representa al jugador que intenta escapar del gato
+class Raton(Jugadores):
+    def movimientos_permitidos(self):
+        movimientos = []
+
+        for cambio_f, cambio_c in DIRECCIONES:
+            nueva_f, nueva_c = self.fila + cambio_f, self.columna + cambio_c
+
+            if 0 <= nueva_f < MATRIZ_TAMANO and 0 <= nueva_c < MATRIZ_TAMANO:
+                movimientos.append((nueva_f, nueva_c))
+        return movimientos
