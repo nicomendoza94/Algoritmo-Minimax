@@ -64,8 +64,29 @@ def mostrar_matriz(gato, raton):
     print()
 
 
-# Prueba simple
-gato = Gato(0, 0, 'G')
-raton = Raton(6, 6, 'R')
-mostrar_matriz(gato, raton)
+def iniciar_juego():
+    gato = Gato(0, 0, 'G')
+    raton = Raton(6, 6, 'R')
+    turno = 0
+
+    while gato.posicion() != raton.posicion():
+        mostrar_matriz(gato, raton)
+        time.sleep(1)
+
+        if turno % 2 == 0:
+            movs = raton.movimientos_permitidos()
+            if movs:
+                raton.mover(*random.choice(movs))
+        else:
+            movs = gato.movimientos_permitidos()
+            if movs:
+                gato.mover(*random.choice(movs))
+
+        turno += 1
+
+    print("El gato atrapó al ratón!")
+
+
+iniciar_juego()
+
 
