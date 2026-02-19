@@ -46,3 +46,26 @@ class Raton(Jugadores):
             if 0 <= nueva_f < MATRIZ_TAMANO and 0 <= nueva_c < MATRIZ_TAMANO:
                 movimientos.append((nueva_f, nueva_c))
         return movimientos
+
+# Funcion para mostrar la matriz    
+def mostrar_matriz(gato, raton):
+    os.system("cls" if os.name == "nt" else "clear")
+    for fila in range(MATRIZ_TAMANO):
+        linea = ""
+        for columna in range(MATRIZ_TAMANO):
+            pos = (fila, columna)
+            if pos == gato.posicion():
+                linea += "G "
+            elif pos == raton.posicion():
+                linea += "R "
+            else:
+                linea += ". "
+        print(linea)
+    print()
+
+
+# Prueba simple
+gato = Gato(0, 0, 'G')
+raton = Raton(6, 6, 'R')
+mostrar_matriz(gato, raton)
+
