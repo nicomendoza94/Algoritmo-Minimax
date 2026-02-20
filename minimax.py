@@ -116,8 +116,10 @@ def iniciar_juego():
     gato = Gato(0, 0, 'G')
     raton = Raton(6, 6, 'R')
     turno = 0
+    Turnos_disp = 20
 
-    while gato.posicion() != raton.posicion():
+    while gato.posicion() != raton.posicion() and turno < Turnos_disp:
+        print(f"Turno {turno + 1}/{Turnos_disp}")
         mostrar_matriz(gato, raton)
         time.sleep(1)
 
@@ -133,7 +135,12 @@ def iniciar_juego():
 
         turno += 1
 
-    print("El gato atrapó al ratón!")
+    mostrar_matriz(gato, raton)
+
+    if gato.posicion() == raton.posicion():
+        print("El gato atrapó al ratón!")
+    else:
+        print("El ratón escapó tras varios turnos.")
 
 
 iniciar_juego()
