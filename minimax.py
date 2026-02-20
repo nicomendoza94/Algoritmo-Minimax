@@ -74,7 +74,43 @@ def evaluar_estado(gato, raton):
         return 100   # incentivo para acercarse
     else:
         return -dist
+    
+def minimax_gato(gato, raton, profundidad, maximizando):
+    if profundidad == 0 or gato.posicion() == raton.posicion():
+        return evaluar_estado(gato, raton), gato.posicion()
+    
+    #turno del gato que quiere maximizar su beneficio
+    if maximizando:
+        mejor_valor = float("-inf")
+        mejor_mov = gato.posicion()
+        movimientos = gato.movimientos_permitidos()
+        random.shuffle(movimientos)   # Desempatar
+        for mov in movimientos:
+            gato_copia = copy.deepcopy(gato)
+            gato_copia.mover(*mov)
 
+            if gato_copia.posicion() == raton.posicion():
+                return 1000, mov   # captura del raton
+            #se llama recurisvamente a la funcion, pero para el turno del raton
+            valor, _ = minimax_gato(gato_copia, raton, profundidad - 1, False)
+            if valor > mejor_valor:   #compara el valor que dio de comparar ese movimiento
+                mejor_valor = valor
+                mejor_mov = mov
+        return mejor_valor, mejor_mov
+    else:
+        # El gato simula posibles movimientos aleatorios del ratón (para anticiparse)
+        peor_valor = float("inf")
+        peor_mov = raton.posicion()
+        movimientos = raton.movimientos_permitidos()
+        random.shuffle(movimientos)
+        for mov in movimientos:
+            raton_copia = copy.deepcopy(raton)
+            raton_copia.mover(*mov)
+            valor, _ = minimax_gato(gato, raton_copia, profundidad - 1, True)
+            if valor < peor_valor:
+                peor_valor = valor
+                peor_mov = mov
+        return peor_valor, peor_mov
 
 def iniciar_juego():
     gato = Gato(0, 0, 'G')
@@ -86,13 +122,14 @@ def iniciar_juego():
         time.sleep(1)
 
         if turno % 2 == 0:
+            # Turno del ratón aleatorio
             movs = raton.movimientos_permitidos()
             if movs:
                 raton.mover(*random.choice(movs))
         else:
-            movs = gato.movimientos_permitidos()
-            if movs:
-                gato.mover(*random.choice(movs))
+            # Turno del gato con minimax
+            _, mov = minimax_gato(gato, raton, profundidad=3, maximizando=True)
+            gato.mover(*mov)
 
         turno += 1
 
