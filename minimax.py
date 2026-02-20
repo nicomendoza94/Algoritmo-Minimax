@@ -63,6 +63,18 @@ def mostrar_matriz(gato, raton):
         print(linea)
     print()
 
+def manhattan(pos1, pos2):
+    return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
+
+def evaluar_estado(gato, raton):
+    dist = manhattan(gato.posicion(), raton.posicion())
+    if dist == 0:
+        return 1000  # gato atrapa al raton
+    elif dist == 1:
+        return 100   # incentivo para acercarse
+    else:
+        return -dist
+
 
 def iniciar_juego():
     gato = Gato(0, 0, 'G')
